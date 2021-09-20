@@ -1,9 +1,7 @@
-chrome.runtime.onInstalled.addListener(() => {
-  console.log('Url Decoder worker is installed');
-});
-
-
-chrome.browserAction.onClicked.addListener(function(tab) {
-  console.log('🚀 ~ tab', tab);
-  console.log('clicked icon');
+// TODO: (chrome storage) url 체크해서 실행 여부 결정
+chrome.action.onClicked.addListener((tab) => {
+  chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    files: ['content-script.js']
+  });
 });
