@@ -18,9 +18,9 @@ import {
 import { useForm, useFieldArray } from 'react-hook-form';
 
 const RULE_ITEM_DEFAULT_VALUE = {
-  urlPattern: '',
+  origin: '',
   decodeSelectors: '',
-  loadingSelector: '',
+  loadedSelectors: '',
 };
 
 function OptionsForm({ rules }) {
@@ -88,13 +88,13 @@ function OptionsForm({ rules }) {
                   isInvalid={Boolean(
                     formState.errors.rules &&
                     formState.errors.rules[index] &&
-                    formState.errors.rules[index].urlPattern
+                    formState.errors.rules[index].origin
                   )}
                 >
                   <FormLabel>URL</FormLabel>
                   <Input
                     placeholder="예) https://sentry.io"
-                    {...register(`rules.${index}.urlPattern`, { required: true })}
+                    {...register(`rules.${index}.origin`, { required: true })}
                   />
                   <FormHelperText>실행될 URL을 입력합니다.</FormHelperText>
                 </FormControl>
@@ -123,9 +123,9 @@ function OptionsForm({ rules }) {
                   <FormLabel>Loaded Selectors</FormLabel>
                   <Textarea
                     placeholder='예) [data-test-id="group"], span.loading'
-                    {...register(`rules.${index}.loadingSelector`)}
+                    {...register(`rules.${index}.loadedSelectors`)}
                   />
-                  <FormHelperText>Load됨을 판단할 Selector를 입력합니다.</FormHelperText>
+                  <FormHelperText>Load됨을 판단할 Selector들을 입력합니다. (,로 구분)</FormHelperText>
                 </FormControl>
               </Box>
               <Spacer />
