@@ -1,4 +1,20 @@
-// onInstalled
+// extension이 install되었을 때에 기본 option값 추가
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.sync.get('rules', function(result) {
+    const rules = result.rules;
+    if (rules) {
+      return;
+    }
+
+    chrome.storage.sync.set({
+      rules: [{
+        origin: 'https://sentry.io',
+        decodeSelectors: 'em, [data-test-id="loaded-device-name"], [data-test-id="http-renderer-external-link"]',
+        loadedSelectors: '[data-test-id="group"], [data-test-id="event-entries-loading-false"]',
+      }],
+    });
+  });
+});
 
 // tab url이 업데이트되었을 때에 content-script 실행
 chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
