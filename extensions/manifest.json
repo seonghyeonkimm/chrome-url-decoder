@@ -41,5 +41,5 @@
     "48": "/images/get_started48.png",
     "128": "/images/get_started128.png"
   },
-  "options_page": "option-app/build/index.html"
+  "options_page": "build/index.html"
 }
