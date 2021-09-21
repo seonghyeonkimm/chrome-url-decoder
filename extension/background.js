@@ -9,7 +9,7 @@ chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.sync.set({
       rules: [{
         origin: 'https://sentry.io',
-        decodeSelectors: 'em, [data-test-id="loaded-device-name"], [data-test-id="http-renderer-external-link"]',
+        decodeSelectors: 'em, [data-test-id="loaded-device-name"], [data-test-id="http-renderer-external-link"], span.val-string',
         loadedSelectors: '[data-test-id="group"], [data-test-id="event-entries-loading-false"]',
       }],
     });
