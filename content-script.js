@@ -1,38 +1,56 @@
 (() => {
   chrome.storage.sync.get('rules', function(result) {
     const rules = result.rules || [];
-    const patternData = rules.find((rule) => rule.urlPattern === window.location.origin);
-    if (!patternData) {
+    const originData = rules.find((rule) => rule.origin === window.location.origin);
+    if (!originData) {
       return;
     }
 
-    const { decodeSelectors, loadingSelector } = patternData;
+    const { decodeSelectors, loadedSelectors } = originData;
     const decodeTextContentsInPage = () => { 
       const selected = decodeSelectors.split(',').reduce((current, next) =>
         current.concat(...document.querySelectorAll(next.trim())), [],
       )
     
       selected.forEach(item => {
-        item.textContent = decodeURIComponent(item.textContent);
+        try {
+          item.textContent = decodeURIComponent(item.textContent);
+        } catch {};
       });
     }
 
     const observer = new MutationObserver(function(mutations) {
+      function runJob() {
+        decodeTextContentsInPage();
+        observer.disconnect();
+      }
+
       mutations.forEach(() => {
-        const isLoaded = document.body.querySelectorAll(loadingSelector).length > 0;
+        if (!loadedSelectors) {
+          runJob();
+          return;
+        }
+
+        const loaded = loadedSelectors.split(',').reduce((current, next) =>
+          current.concat(...document.querySelectorAll(next.trim())), [],
+        )
+        const isLoaded = loaded.length > 0;
         if (!isLoaded) {
           return;
         }
 
-        decodeTextContentsInPage();
-        observer.disconnect();
+        runJob();
       });
     });
 
     decodeTextContentsInPage();
     observer.observe(
       document.body, 
-      { childList: true },
+      {
+        subtree: true,
+        childList: true,
+        attributes: true,
+      },
     );
   });
 })()
