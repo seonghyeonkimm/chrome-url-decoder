@@ -20,14 +20,9 @@
     }
 
     const observer = new MutationObserver(function(mutations) {
-      function runJob() {
-        decodeTextContentsInPage();
-        observer.disconnect();
-      }
-
       mutations.forEach(() => {
         if (!loadedSelectors) {
-          runJob();
+          decodeTextContentsInPage();
           return;
         }
 
@@ -39,7 +34,7 @@
           return;
         }
 
-        runJob();
+        decodeTextContentsInPage();
       });
     });
 
