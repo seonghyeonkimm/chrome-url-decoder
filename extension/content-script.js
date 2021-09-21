@@ -38,7 +38,6 @@
       });
     });
 
-    decodeTextContentsInPage();
     observer.observe(
       document.body, 
       {
